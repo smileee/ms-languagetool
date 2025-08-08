@@ -18,9 +18,7 @@ services:
       - CAP_SETGID
     security_opt:
       - no-new-privileges
-    ports:
-      # Using default port from the image
-      - 80:8081
+    # do not publish this service directly; publish via nginx proxy
     environment:
       # OVERRIDE: comma seperated list of ngram language models to download (if not existing)
       #           Valid languages are "en", "de", "es", "fr" and "nl". Image default: none
@@ -60,3 +58,14 @@ services:
       - ./ngrams:/ngrams
       # OPTIONAL: The location of the fasttext model on the local machine
       - ./fasttext:/fasttext
+
+  nginx:
+    image: nginx:alpine
+    container_name: languagetool-nginx
+    restart: unless-stopped
+    depends_on:
+      - languagetool
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
