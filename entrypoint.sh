@@ -457,9 +457,11 @@ fi
 
 read -ra FINAL_EXECUTE_ARGS <<< "${EXECUTE_ARGS}"
 
+ALLOWED_ORIGIN_VALUE="${langtool_allowOrigin:-*}"
+
 "${FINAL_EXECUTE_ARGS[@]}" \
     java "${FINAL_JAVA_OPTS[@]}" -Djna.tmpdir="/tmp" -Dlogback.configurationFile="/tmp/logback.xml" -cp languagetool-server.jar org.languagetool.server.HTTPServer \
       --port "${LISTEN_PORT:-8081}" \
       --public \
-      --allow-origin "*" \
+      --allow-origin "${ALLOWED_ORIGIN_VALUE}" \
       --config /tmp/config.properties
