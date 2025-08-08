@@ -1,6 +1,7 @@
 ---
 services:
   languagetool:
+    # image: meyay/languagetool:latest
     build: .
     image: ms-languagetool:local
     container_name: languagetool
